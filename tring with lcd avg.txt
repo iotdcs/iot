@@ -1,0 +1,46 @@
+int trigPin = 2;
+int echopin = 3;
+long duration,distance;
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echopin, INPUT);
+
+}
+
+void loop() {
+  int sum = 0;
+  int avg = 0;
+  int temp;
+    
+    
+    for(int i=0; i<3; i++)
+  {
+
+    delay(2000);
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(5);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    digitalWrite(led, LOW);
+    digitalWrite(led1, LOW);
+    pinMode(echopin, INPUT);
+    duration = pulseIn(echopin, HIGH);
+    distance = duration*0.034/2;
+    Serial.println(distance);
+    sum=sum+distance;
+    avg = sum/3;
+    
+    
+
+    delay(250);
+  }
+    
+  Serial.print("The Average of ultrasonic Sensor is:");
+  Serial.print(avg);
+  
+
+}
