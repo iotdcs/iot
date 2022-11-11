@@ -1,0 +1,39 @@
+#include<LiquidCrystal.h>
+#include<DHT.h>
+#define DHTPIN 9
+#define DHTTYPE DHT11
+const int rs=12,en=11,d4=5,d5=4,d6=3,d7=2;
+LiquidCrystal lcd(rs,en,d4,d5,d6,d7);
+DHT dht(DHTPIN,DHTTYPE);
+
+void setup()
+{
+  lcd.begin(16,2);
+  lcd.setCursor(0,0);
+  dht.begin();
+  lcd.print("Temperature:");
+  lcd.setCursor(0,1);
+  lcd.print("Huminity:");
+}
+
+void loop()
+{
+  delay(500);
+  float T = dht.readTemperature();
+  float H = dht.readHuminity();
+  if(isnan(H) && isnan(T))
+  {
+    lcd.print(Error);
+    return;
+  }
+  else
+  {
+    lcd.setCursor(12,0);
+    lcd.print(T);
+    lcd.setCursor(12,1);
+    lcd.print(H);
+
+
+
+  }
+}
