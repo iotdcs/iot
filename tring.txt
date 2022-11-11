@@ -1,0 +1,89 @@
+
+
+const int trigpin = 2;
+const int echopin = 3;
+
+void setup() {
+  // initialize serial communication:
+  Serial.begin(9600);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  
+}
+
+void loop() {
+  delay(2000);
+  long duration,distance;
+
+  
+  pinMode(trigpin, OUTPUT);
+  digitalWrite(trigpin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigpin, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trigpin, LOW);
+
+  
+  pinMode(echopin, INPUT);
+  duration = pulseIn(echopin, HIGH);
+
+  
+  distance = duration * 0.034 / 2;
+
+  Serial.print("distance");
+  Serial.println(distance);
+  
+  
+
+  delay(250);
+  if(distance<=10)
+  {
+    one();  
+  }
+  else if(distance<=30&&distance>10)
+  {
+    two();
+  }
+  else if(distance<=50&&distance>30)
+  {
+    three();  
+  }
+}
+void one()
+{
+  digitalWrite(4, HIGH);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, HIGH);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
+  
+}
+void two()
+{
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, HIGH);
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, LOW);
+  
+}
+void three()
+{
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, HIGH);
+  digitalWrite(10, LOW);
+  
+}
