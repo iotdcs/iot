@@ -1,0 +1,87 @@
+================
+const int trig=3;
+const int echo=2;
+const int led=4;
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(trig,OUTPUT);
+pinMode(led,OUTPUT);
+pinMode(echo,INPUT);
+
+//7 SEGMENT
+pinMode(5,OUTPUT);//A
+pinMode(6,OUTPUT);//B
+pinMode(7,OUTPUT);//C
+pinMode(8,OUTPUT);//D
+pinMode(9,OUTPUT);//E
+pinMode(10,OUTPUT);//F
+pinMode(11,OUTPUT);//G
+
+Serial.begin(9600);
+}
+
+void loop() {
+long duration=1;
+int dis=1;
+digitalWrite(led,LOW);
+digitalWrite(trig,LOW);
+delayMicroseconds(2);
+digitalWrite(trig,HIGH);
+delayMicroseconds(2);
+digitalWrite(trig,LOW);
+duration=pulseIn(echo,HIGH);
+Serial.println("duration");
+Serial.println(duration);
+dis=duration*0.034/2;
+Serial.println(dis);
+delay(500);
+Serial.println("==========");
+if(dis<=10&&dis>0){
+  digitalWrite(led,HIGH);
+  Serial.println("dis<=10");
+  //PRINT 1
+  digitalWrite(5,HIGH);//A
+  digitalWrite(6,LOW);//B
+  digitalWrite(7,LOW);//C
+  digitalWrite(8,HIGH);//D
+  digitalWrite(9,HIGH);//E
+  digitalWrite(10,HIGH);//F
+  digitalWrite(11,HIGH);//G
+}else if(dis<=30&&dis>0){
+  digitalWrite(led,LOW);
+  Serial.println("dis<=30");
+  //PRINT 2
+  digitalWrite(5,LOW);//A
+  digitalWrite(6,LOW);//B
+  digitalWrite(7,HIGH);//C
+  digitalWrite(8,LOW);//D
+  digitalWrite(9,LOW);//E
+  digitalWrite(10,HIGH);//F
+  digitalWrite(11,LOW);//G
+}else if(dis>=50){
+  digitalWrite(led,LOW);
+  Serial.println("dis<=50");
+  //PRINT 3
+  digitalWrite(5,LOW);//A
+  digitalWrite(6,LOW);//B
+  digitalWrite(7,LOW);//C
+  digitalWrite(8,LOW);//D
+  digitalWrite(9,HIGH);//E
+  digitalWrite(10,HIGH);//F
+  digitalWrite(11,LOW);//G
+}else{
+  Serial.println("else");
+  //PRINT -
+  digitalWrite(5,HIGH);//A
+  digitalWrite(6,HIGH);//B
+  digitalWrite(7,HIGH);//C
+  digitalWrite(8,HIGH);//D
+  digitalWrite(9,HIGH);//E
+  digitalWrite(10,HIGH);//F
+  digitalWrite(11,LOW);//G
+}
+
+delay(500);
+
+}

@@ -1,0 +1,54 @@
+On pull up button press event start the 7 segment counter by 5 4 3 2 1 
+then start taking 10 readings of dht11 and perform the average temp or 
+humidity and print that on serial monitor
+
+#include "DHT.h"
+#define DHTPIN 11 
+#define DHTTYPE DHT11
+//int buzz=2;
+int btn=3;
+int sumtemp=0,sumhum=0,avghum=0,avgtemp=0;
+DHT dht(DHTPIN, DHTTYPE);
+void setup() {
+  // put your setup code here, to run once:
+// pinMode(buzz,OUTPUT);
+Serial.begin(9600);
+dht.begin();
+pinMode(4,OUTPUT);
+pinMode(5,OUTPUT);
+pinMode(6,OUTPUT);
+pinMode(7,OUTPUT);
+pinMode(8,OUTPUT);
+pinMode(9,OUTPUT);
+pinMode(10,OUTPUT);
+ pinMode(btn,INPUT_PULLUP);
+ temp_segment();
+}
+void temp_segment(){
+  if(digitalRead(btn)==LOW){
+ // digitalWrite(buzz,HIGH);
+     five();
+    delay(3000);
+     four();
+     delay(3000);
+     three();
+     delay(3000);
+     two();
+     delay(3000);
+    one();
+     delay(3000);
+      empty();
+    reading();
+  }
+  else{
+    // digitalWrite(buzz,LOW);
+ empty();
+   }
+  }
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+void empty(){
+  digitalWrite(4,LOW);
+digitalWrite(5,LOW);
