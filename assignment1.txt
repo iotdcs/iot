@@ -1,0 +1,445 @@
+//Q1. To interface LED with Arduino and write a program to turn ON/OFF LED light at interval of every 1 Sec
+
+int led = 10;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(led, HIGH);
+  delay(200);
+  digitalWrite(led, LOW);
+  delay(200);
+}
+
+
+
+
+//Q2. To interface LED with ESP32(Node MCU-8266) and write a program to turn ON/OFF LED light at interval of every 1 Sec.
+
+
+int led = D0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(led, HIGH);
+  delay(200);
+  digitalWrite(led, LOW);
+  delay(200);
+}
+
+
+//Q3. To interface 2 LED with different colour and write a program to turn ON/OFF LED light at a same time. 
+
+
+int Wled = 10;
+int Rled = 9;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(Wled, OUTPUT);
+  pinMode(Rled, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(Wled, HIGH);
+  digitalWrite(Rled, HIGH);
+  delay(200);
+  digitalWrite(Wled, LOW);
+  digitalWrite(Rled, LOW);
+  delay(200);
+}
+
+
+
+//Q4.  To interface BUZZER and write a program to turn ON/OFF Buzzer.
+
+
+int buzzer = 8;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+   tone(buzzer, 900, 400);
+   delay(100);
+}
+
+
+
+
+//Q5.  To interface 2 LED with different colour and write a program to turn ON/OFF LED light on after another,
+ which works light police Van Light. And also play the buzzer of police van or ambulance.
+
+int led1 = 13;
+int led2 = 12;
+int buzzer = 11;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
+  tone(buzzer, 400, 100);
+  delay(200);
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+  tone(buzzer, 400, 100);
+  delay(200);
+}
+
+
+
+//Q6. Write a program to play a melody using buzzer.
+
+int buzzer = 8;
+int Speed = 2.5;
+int arr[] = { 
+                100,200,300,700,100,
+                200,300,500,800,100,
+                500,400,300,900,100,
+                900,200,800,100  
+              };
+int duration[] = { 
+                   100,100,300,100,100, 
+                   100,100,300,100,100, 
+                   100,100,300,100,100, 
+                   100,100,300,100,100, 
+                 };
+ 
+
+void setup() {
+  // put your setup code here, to run once:
+  for( int i = 0; i < 203; i++)
+  {
+    int wait = arr[i]*Speed;
+    tone(buzzer, arr[i],wait);
+    delay(wait);
+  }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+
+
+ 
+//Q7. To interface PULLUP BUTTON with Arduino. write a program to turn ON/OFF as per the button pullup.
+
+
+int led = 13;
+int pullUp = 12;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led, OUTPUT);
+  pinMode(pullUp, INPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if(digitalRead(pullUp) == HIGH){
+    digitalWrite(led, HIGH);
+  }else{
+    digitalWrite(led, LOW);
+  }
+}
+
+
+
+
+//Q8. To interface DHT11 Sensor with Arduino and write a program to print temperature and humidity reading.
+
+
+#include "DHT.h"
+#define DHTTYPE DHT11
+DHT dhtSensor(8,DHTTYPE);
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(8, INPUT);
+  Serial.begin(9600);
+  dhtSensor.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  float temp = dhtSensor.readTemperature();
+  float hmdt = dhtSensor.readHumidity();
+  Serial.println("Temperature Is :- ");
+  Serial.println(temp);
+  Serial.println("Humidity Is :- ");
+  delay(500);
+}
+
+
+
+
+//Q9.  Use DHT 11 and glow the red light if temperature goes above 30’c and play the buzzer and blink the 
+green LED if temperature goes below 30’c and stop the buzzer. 
+
+
+
+#include "DHT.h"
+#define DHTPIN 13
+#define Rpin 11
+#define Wpin 12
+#define buzzer 10
+#define DHTTYPE DHT11 
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  pinMode(buzzer,OUTPUT);
+   pinMode(Rpin, OUTPUT);
+   pinMode(Wpin, OUTPUT);
+   Serial.begin(9600);
+   Serial.println("DHTxx test!");
+   dht.begin();
+}
+
+void loop() {
+   digitalWrite(Wpin,LOW);
+   digitalWrite(Rpin,LOW);
+   delay(200); 
+   float h = dht.readHumidity();
+   float t = dht.readTemperature();
+   float f = dht.readTemperature(true);
+   
+   if (isnan(h) || isnan(t) || isnan(f)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+   }
+   
+   float hif = dht.computeHeatIndex(f, h);
+   float hic = dht.computeHeatIndex(t, h, false);
+   
+   if(t > 30){
+    tone(buzzer,100,700);
+    delay(800);
+      digitalWrite(Rpin,HIGH);
+      digitalWrite(Wpin,LOW);
+   }else{
+    noTone(buzzer);
+      digitalWrite(Wpin,HIGH);
+      digitalWrite(Rpin,LOW);
+   }
+   Serial.print ("Humidity: ");
+   Serial.print (h);
+   Serial.print (" %\t");
+   Serial.print ("Temperature: ");
+   Serial.print (t);
+   Serial.print (" *C ");
+   Serial.print (f);
+   Serial.print (" *F\t");
+   Serial.print ("Heat index: ");
+   Serial.print (hic);
+   Serial.print (" *C ");
+   Serial.print (hif);
+   Serial.println (" *F");
+}
+
+
+
+
+//Q10. Write a Program to read three values of temperature and 10 values of humidity. 
+Perform Addition of three temperature readings and print the number is odd or even. 
+Calculate the average of 10 humidity readings.
+
+
+#include "DHT.h"
+#define DHTPIN 10
+#define DHTTYPE DHT11 
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+   Serial.begin(9600);
+   Serial.println("DHTxx test!");
+   dht.begin();
+
+    //Temperature
+    float sum=0;
+    for(int i=0;i<3;i++){
+      float t = dht.readTemperature();
+      sum=sum+t;
+    }
+    if (isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!(Temperature)");
+      return;
+     }
+     else{
+        Serial.print ("Sum Temperature: ");
+        Serial.print (sum);
+        
+          int flag=0;
+          int m=sum/2;    
+          for(int i=2;i<=m;i++)    
+          {    
+            if(sum%i==0)    
+            {    
+                printf("Number is not prime");    
+                flag=1;    
+                break;    
+             }    
+          }    
+          if(flag==0)    
+              printf("Number is prime");       
+    }     
+
+    //Humidity
+    float sum=0;
+    for(int i=0;i<10;i++){
+      float h = dht.readHumidity();
+      sum=sum+h;
+    }
+    float avg=sum/10;
+    
+   if (isnan(h)) {
+      Serial.println("Failed to read from DHT sensor!(Humidity)");
+      return;
+   }
+   else{
+        Serial.print ("Avrage Humidity :- ");
+        Serial.print (avg);
+   }  
+}
+
+
+
+//Q11. Write a Program to read five values of temperature and calculate the average of readings. 
+Run the loop up to the average values of temperature and print the Fibonacci series up to the average temperature value.
+
+
+#include "DHT.h"
+#define DHTPIN 13
+#define DHTTYPE DHT11 
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+   Serial.begin(9600);
+   Serial.println("DHTxx test!");
+   dht.begin();
+
+    float sum=0;
+    for(int i=0;i<5;i++){
+      float t = dht.readTemperature();
+      sum=sum+t;
+    }
+    float avg=sum/5;
+
+   if (isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+   }
+   else{
+        Serial.print ("Avrage Temperature :- ");
+        Serial.print (avg);
+   }
+}
+
+
+//Q12.  To interface IR Sensor with Arduino and write a program to print readings of IR sensor
+
+
+void setup() {
+   pinMode(5,INPUT);
+   Serial.begin(9600);
+}
+
+void loop() {
+   if(digitalRead(5)==LOW){
+      Serial.println("1");
+   }
+   else{
+      Serial.println("0");
+}
+}
+
+
+
+//Q13. To interface IR Sensor with Arduino and write a program to blink red or white LED. 
+If the Transmitter transmit and Photodiode receives the rays then glow White LED else glow Red LED/play the buzzer.
+
+
+
+
+int Wled = 12;
+int Rled = 11;
+int Spin = 13;
+int Buzzer = 10;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(Wled,OUTPUT);
+  pinMode(Rled,OUTPUT);
+  pinMode(Buzzer, OUTPUT);
+  pinMode(Spin,INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (digitalRead(Spin)== LOW)
+  {
+    digitalWrite(Wled, HIGH);
+    digitalWrite(Rled, LOW);
+    tone(Buzzer, 1000, 250);
+    delay(100);
+  }
+  else if(digitalRead(Spin)== HIGH)
+  {
+    digitalWrite(Wled, LOW);
+    digitalWrite(Rled, HIGH);
+    delay(100);
+    
+  }
+}
+
+
+
+
+//Q14. To interface Ultrasonic Sensor with Arduino. Use the ultrasonic sensor and extract the distance of object.
+
+
+#define Echo_Pin D6
+#define Trig_Pin D5
+
+long duration;
+int distance;
+void setup(){
+  Serial.begin(9600);
+  pinMode(Trig_Pin,OUTPUT);
+  pinMode(Echo_Pin,INPUT);
+ }
+void loop(){
+  digitalWrite(Trig_Pin,LOW);
+  delayMicroseconds(4);
+  digitalWrite(Trig_Pin,HIGH);
+  delayMicroseconds(8);
+  digitalWrite(Trig_Pin,LOW);
+  
+  duration=pulseIn(Echo_Pin,HIGH);
+  distance=(duration*0.034/2);
+  Serial.print("Distance :- ");
+  Serial.print(distance);
+  Serial.println(" cm ");
+               
+}
